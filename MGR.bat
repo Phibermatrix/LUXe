@@ -281,7 +281,31 @@ IF %COUNTRY%==CA (
 )
 ECHO         Done!
 VERIFY > NUL
-
+:: **** UPGRADE MARS Edited ****
+ECHO.
+ECHO Upgrading MARS...
+CD \
+IF %COUNTRY%==US (
+	CD "Admin\MARS-Upgrade\Version-11.14.1391.315"
+)
+IF %COUNTRY%==CA (
+	CD "Admin\MARS-Upgrade\Version-11.14.1391.315"
+)
+START /WAIT CMD /C "FO-Upgrade.bat"
+IF NOT EXIST FO-Upgrade.bat(
+	CD "Admin\MARS-Upgrade\MARS-Upgrade\Version-11.14.1391.315"
+	START /WAIT CMD /C "FO-Upgrade.bat"
+)
+IF %ERRORLEVEL% NEQ 0 (
+	ECHO    **** ERROR ****
+	ECHO "%CD%"
+	ECHO FO-Upgrade.bat
+	ECHO Troubleshoot and correct the upgrade before continuing.
+	CHOICE /C Y /M "Continue"
+)
+ECHO         Done!
+ECHO End UPGRADE MARS. >> "%LOGFILE%"
+VERIFY > NUL
 
 
 :: **** UPDATE MARS LICENSE ****
